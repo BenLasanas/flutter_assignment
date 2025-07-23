@@ -1,0 +1,17 @@
+[
+  {
+    "title": "Flutter for Beginners",
+    "author": "John Doe",
+    "coverUrl": "https://covers.openlibrary.org/b/id/10523338-L.jpg"
+  },
+  {
+    "title": "Advanced Dart",
+    "author": "Jane Smith",
+    "coverUrl": "https://covers.openlibrary.org/b/id/10523339-L.jpg"
+  },
+  {
+    "title": "BLoC in Action",
+    "author": "Alex Johnson",
+    "coverUrl": "https://covers.openlibrary.org/b/id/10523340-L.jpg"
+  }
+]
