@@ -2,16 +2,22 @@
   {
     "title": "Flutter for Beginners",
     "author": "John Doe",
+    "publishedYear": 2021,
+    "genre": "Programming",
     "coverUrl": "https://covers.openlibrary.org/b/id/10523338-L.jpg"
   },
   {
     "title": "Advanced Dart",
     "author": "Jane Smith",
+    "publishedYear": 2022,
+    "genre": "Programming",
     "coverUrl": "https://covers.openlibrary.org/b/id/10523339-L.jpg"
   },
   {
     "title": "BLoC in Action",
     "author": "Alex Johnson",
+    "publishedYear": 2023,
+    "genre": "Software Architecture",
     "coverUrl": "https://covers.openlibrary.org/b/id/10523340-L.jpg"
   }
 ]

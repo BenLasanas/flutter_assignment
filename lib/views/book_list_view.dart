@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../blocs/book_bloc.dart';
 import '../blocs/book_state.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'book_detail_view.dart';
+import 'admin_page.dart';
 
 class BookListPage extends StatelessWidget {
   const BookListPage({super.key});
@@ -22,21 +24,51 @@ class BookListPage extends StatelessWidget {
               itemCount: state.books.length,
               itemBuilder: (context, index) {
                 final book = state.books[index];
-                return ListTile(
-                  leading: CachedNetworkImage(
-                    imageUrl: book.coverUrl,
-                    placeholder: (context, url) => const SizedBox(
-                      width: 40,
-                      height: 60,
-                      child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => BookDetailPage(book: book),
+                      ),
+                    );
+                  },
+                  child: Card(
+                    margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    elevation: 2,
+                    child: Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: CachedNetworkImage(
+                            imageUrl: book.coverUrl,
+                            placeholder: (context, url) => const SizedBox(
+                              width: 60,
+                              height: 90,
+                              child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
+                            ),
+                            errorWidget: (context, url, error) => const Icon(Icons.error),
+                            width: 60,
+                            height: 90,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(book.title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                                const SizedBox(height: 4),
+                                Text(book.author, style: const TextStyle(fontSize: 14)),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    errorWidget: (context, url, error) => const Icon(Icons.error),
-                    width: 40,
-                    height: 60,
-                    fit: BoxFit.cover,
                   ),
-                  title: Text(book.title),
-                  subtitle: Text(book.author),
                 );
               },
             );
@@ -45,6 +77,16 @@ class BookListPage extends StatelessWidget {
           }
           return const SizedBox.shrink();
         },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => const AdminPage()),
+          );
+        },
+        child: const Icon(Icons.admin_panel_settings),
+        tooltip: 'Admin',
       ),
     );
   }

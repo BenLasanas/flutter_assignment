@@ -14,14 +14,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Book List',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
-      home: BlocProvider(
-        create: (_) => BookBloc(BookRepository())..add(LoadBooks()),
-        child: const BookListPage(),
+    return BlocProvider(
+      create: (_) => BookBloc(BookRepository())..add(LoadBooks()),
+      child: MaterialApp(
+        title: 'Book List',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        ),
+        home: const BookListPage(),
       ),
     );
   }
