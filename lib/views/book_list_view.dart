@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../blocs/book_bloc.dart';
 import '../blocs/book_state.dart';
+import '../blocs/book_event.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'book_detail_view.dart';
 import 'admin_page.dart';
@@ -20,57 +21,63 @@ class BookListPage extends StatelessWidget {
           if (state is BookLoading) {
             return const Center(child: CircularProgressIndicator());
           } else if (state is BookLoaded) {
-            return ListView.builder(
-              itemCount: state.books.length,
-              itemBuilder: (context, index) {
-                final book = state.books[index];
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => BookDetailPage(book: book),
-                      ),
-                    );
-                  },
-                  child: Card(
-                    margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                    elevation: 2,
-                    child: Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: CachedNetworkImage(
-                            imageUrl: book.coverUrl,
-                            placeholder: (context, url) => const SizedBox(
+            return RefreshIndicator(
+              onRefresh: () async {
+                context.read<BookBloc>().add(LoadBooks());
+                await Future.delayed(const Duration(seconds: 2));
+              },
+              child: ListView.builder(
+                itemCount: state.books.length,
+                itemBuilder: (context, index) {
+                  final book = state.books[index];
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => BookDetailPage(book: book),
+                        ),
+                      );
+                    },
+                    child: Card(
+                      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                      elevation: 2,
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: CachedNetworkImage(
+                              imageUrl: book.coverUrl,
+                              placeholder: (context, url) => const SizedBox(
+                                width: 60,
+                                height: 90,
+                                child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
+                              ),
+                              errorWidget: (context, url, error) => const Icon(Icons.error),
                               width: 60,
                               height: 90,
-                              child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
-                            ),
-                            errorWidget: (context, url, error) => const Icon(Icons.error),
-                            width: 60,
-                            height: 90,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(book.title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                                const SizedBox(height: 4),
-                                Text(book.author, style: const TextStyle(fontSize: 14)),
-                              ],
+                              fit: BoxFit.cover,
                             ),
                           ),
-                        ),
-                      ],
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(book.title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                                  const SizedBox(height: 4),
+                                  Text(book.author, style: const TextStyle(fontSize: 14)),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             );
           } else if (state is BookError) {
             return Center(child: Text(state.message));
@@ -85,8 +92,8 @@ class BookListPage extends StatelessWidget {
             MaterialPageRoute(builder: (_) => const AdminPage()),
           );
         },
-        child: const Icon(Icons.admin_panel_settings),
         tooltip: 'Admin',
+        child: const Icon(Icons.admin_panel_settings),
       ),
     );
   }

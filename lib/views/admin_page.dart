@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/book_model.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../blocs/book_bloc.dart';
 import '../blocs/book_event.dart';
@@ -81,7 +82,18 @@ class _AdminPageState extends State<AdminPage> {
                 return Card(
                   margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                   child: ListTile(
-                    leading: Image.network(book.coverUrl, width: 40, height: 60, fit: BoxFit.cover, errorBuilder: (c, e, s) => const Icon(Icons.error)),
+                    leading: CachedNetworkImage(
+                      imageUrl: book.coverUrl,
+                      width: 40,
+                      height: 60,
+                      fit: BoxFit.cover,
+                      placeholder: (context, url) => const SizedBox(
+                        width: 40,
+                        height: 60,
+                        child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
+                      ),
+                      errorWidget: (context, url, error) => const Icon(Icons.error),
+                    ),
                     title: Text(book.title),
                     subtitle: Text('${book.author} • ${book.publishedYear} • ${book.genre}'),
                     trailing: Row(
@@ -111,8 +123,8 @@ class _AdminPageState extends State<AdminPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showBookDialog(),
-        child: const Icon(Icons.add),
         tooltip: 'Add Book',
+        child: const Icon(Icons.add),
       ),
     );
   }
