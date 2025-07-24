@@ -11,13 +11,62 @@
     "author": "Jane Smith",
     "publishedYear": 2022,
     "genre": "Programming",
-    "coverUrl": "https://covers.openlibrary.org/b/id/10523339-L.jpg"
+    "coverUrl": "https://covers.openlibrary.org/b/id/10523349-L.jpg"
   },
   {
     "title": "BLoC in Action",
     "author": "Alex Johnson",
     "publishedYear": 2023,
     "genre": "Software Architecture",
-    "coverUrl": "https://covers.openlibrary.org/b/id/10523340-L.jpg"
+    "coverUrl": "https://covers.openlibrary.org/b/id/10523350-L.jpg"
+  },
+  {
+    "title": "Effective Flutter",
+    "author": "Emily Carter",
+    "publishedYear": 2020,
+    "genre": "Programming",
+    "coverUrl": "https://covers.openlibrary.org/b/id/10523351-L.jpg"
+  },
+  {
+    "title": "Dart Cookbook",
+    "author": "Michael Brown",
+    "publishedYear": 2019,
+    "genre": "Programming",
+    "coverUrl": "https://covers.openlibrary.org/b/id/10523352-L.jpg"
+  },
+  {
+    "title": "Mobile UI Design",
+    "author": "Sara Lee",
+    "publishedYear": 2021,
+    "genre": "Design",
+    "coverUrl": "https://covers.openlibrary.org/b/id/10523353-L.jpg"
+  },
+  {
+    "title": "Clean Code in Dart",
+    "author": "Robert Martin",
+    "publishedYear": 2022,
+    "genre": "Programming",
+    "coverUrl": "https://covers.openlibrary.org/b/id/10523354-L.jpg"
+  },
+  {
+    "title": "Flutter Animations",
+    "author": "Linda White",
+    "publishedYear": 2023,
+    "genre": "Programming",
+    "coverUrl": "https://covers.openlibrary.org/b/id/10523355-L.jpg"
+  },
+  {
+    "title": "State Management Patterns",
+    "author": "Chris Black",
+    "publishedYear": 2020,
+    "genre": "Software Architecture",
+    "coverUrl": "https://covers.openlibrary.org/b/id/10523356-L.jpg"
+  },
+  {
+    "title": "Testing Flutter Apps",
+    "author": "Patricia Green",
+    "publishedYear": 2021,
+    "genre": "Testing",
+    "coverUrl": "https://covers.openlibrary.org/b/id/10523357-L.jpg"
   }
 ]
