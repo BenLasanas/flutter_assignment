@@ -8,7 +8,7 @@ import 'package:flutter_developer_assignment/blocs/book_event.dart';
 
 import 'package:flutter_developer_assignment/models/book_model.dart';
 
-// Sample books for testing
+// AI Generated - Sample books for testing
 final dummyBooks = [
   Book(
     title: 'Flutter for Beginners',
