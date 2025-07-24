@@ -8,13 +8,36 @@ import 'book_detail_view.dart';
 import 'admin_page.dart';
 
 class BookListPage extends StatelessWidget {
-  const BookListPage({super.key});
+  final ValueNotifier<ThemeMode>? themeModeNotifier;
+  const BookListPage({super.key, this.themeModeNotifier});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Books'),
+        actions: [
+          SafeArea(
+            child: Row(
+              children: [
+                if (themeModeNotifier != null)
+                  ValueListenableBuilder<ThemeMode>(
+                    valueListenable: themeModeNotifier!,
+                    builder: (context, mode, _) {
+                      return IconButton(
+                        icon: Icon(mode == ThemeMode.dark ? Icons.dark_mode : Icons.light_mode),
+                        tooltip: mode == ThemeMode.dark ? 'Switch to Light Mode' : 'Switch to Dark Mode',
+                        onPressed: () {
+                          themeModeNotifier!.value =
+                            mode == ThemeMode.dark ? ThemeMode.light : ThemeMode.dark;
+                        },
+                      );
+                    },
+                  ),
+              ],
+            ),
+          ),
+        ],
       ),
       body: BlocBuilder<BookBloc, BookState>(
         builder: (context, state) {
@@ -85,15 +108,17 @@ class BookListPage extends StatelessWidget {
           return const SizedBox.shrink();
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (_) => const AdminPage()),
-          );
-        },
-        tooltip: 'Admin',
-        child: const Icon(Icons.admin_panel_settings),
+      floatingActionButton: SafeArea(
+        child: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const AdminPage()),
+            );
+          },
+          tooltip: 'Admin',
+          child: const Icon(Icons.admin_panel_settings),
+        ),
       ),
     );
   }

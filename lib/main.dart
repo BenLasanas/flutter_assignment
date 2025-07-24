@@ -9,6 +9,8 @@ void main() {
   runApp(const MyApp());
 }
 
+final themeModeNotifier = ValueNotifier<ThemeMode>(ThemeMode.system);
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -16,12 +18,23 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => BookBloc(BookRepository())..add(LoadBooks()),
-      child: MaterialApp(
-        title: 'Book List',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        ),
-        home: const BookListPage(),
+      child: ValueListenableBuilder<ThemeMode>(
+        valueListenable: themeModeNotifier,
+        builder: (context, themeMode, _) {
+          return MaterialApp(
+            title: 'Book List',
+            theme: ThemeData(
+              colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+              brightness: Brightness.light,
+            ),
+            darkTheme: ThemeData(
+              colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple, brightness: Brightness.dark),
+              brightness: Brightness.dark,
+            ),
+            themeMode: themeMode,
+            home: BookListPage(themeModeNotifier: themeModeNotifier),
+          );
+        },
       ),
     );
   }
