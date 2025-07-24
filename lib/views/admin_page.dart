@@ -106,7 +106,7 @@ class _AdminPageState extends State<AdminPage> {
                         IconButton(
                           icon: const Icon(Icons.delete),
                           onPressed: () {
-                            context.read<BookBloc>().add(DeleteBook(index));
+                            context.read<BookBloc>().add(DeleteBook(book));
                           },
                         ),
                       ],

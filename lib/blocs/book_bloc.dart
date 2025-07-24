@@ -18,37 +18,24 @@ class BookBloc extends Bloc<BookEvent, BookState> {
     });
 
     on<AddBook>((event, emit) async {
-      if (state is BookLoaded) {
-        final books = List<Book>.from((state as BookLoaded).books);
-        emit(BookLoading());
-        await Future.delayed(const Duration(seconds: 2));
-        books.add(event.book);
-        emit(BookLoaded(books));
-      }
+      emit(BookLoading());
+      await repository.addBook(event.book);
+      final books = await repository.fetchBooks();
+      emit(BookLoaded(List<Book>.from(books)));
     });
 
     on<EditBook>((event, emit) async {
-      if (state is BookLoaded) {
-        final books = List<Book>.from((state as BookLoaded).books);
-        emit(BookLoading());
-        await Future.delayed(const Duration(seconds: 2)); 
-        if (event.index >= 0 && event.index < books.length) {
-          books[event.index] = event.book;
-          emit(BookLoaded(books));
-        }
-      }
+      emit(BookLoading());
+      await repository.editBook(event.book);
+      final books = await repository.fetchBooks();
+      emit(BookLoaded(List<Book>.from(books)));
     });
 
     on<DeleteBook>((event, emit) async {
-      if (state is BookLoaded) {
-        final books = List<Book>.from((state as BookLoaded).books);
-        emit(BookLoading());
-        await Future.delayed(const Duration(seconds: 2)); 
-        if (event.index >= 0 && event.index < books.length) {
-          books.removeAt(event.index);
-          emit(BookLoaded(books));
-        }
-      }
+      emit(BookLoading());
+      await repository.deleteBook(event.book);
+      final books = await repository.fetchBooks();
+      emit(BookLoaded(List<Book>.from(books)));
     });
   }
 }

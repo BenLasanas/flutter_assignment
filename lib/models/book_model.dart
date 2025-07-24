@@ -32,4 +32,21 @@ class Book {
       'coverUrl': coverUrl,
     };
   }
-}
+
+  Book copyWith({
+    String? title,
+    String? author,
+    int? publishedYear,
+    String? genre,
+    String? coverUrl,
+  }) {
+    return Book(
+      title: title ?? this.title,
+      author: author ?? this.author,
+      publishedYear: publishedYear ?? this.publishedYear,
+      genre: genre ?? this.genre,
+      coverUrl: coverUrl ?? this.coverUrl,
+    );
+  }
+  }
+

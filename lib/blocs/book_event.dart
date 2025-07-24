@@ -12,6 +12,6 @@ class EditBook extends BookEvent {
   EditBook(this.index, this.book);
 }
 class DeleteBook extends BookEvent {
-  final int index;
-  DeleteBook(this.index);
+  final Book book;
+  DeleteBook(this.book);
 }
