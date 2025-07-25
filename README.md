@@ -11,8 +11,7 @@ All Books in books.json are AI Generated
 
 2. **Clone this repository**
    ```sh
-   git clone add url here when published
-   cd folder here 
+   git clone git@github.com:BenLasanas/flutter_assignment.git
    ```
 
 3. **Install dependencies**
