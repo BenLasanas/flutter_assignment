@@ -14,11 +14,40 @@ class AdminPage extends StatefulWidget {
 }
 
 class _AdminPageState extends State<AdminPage> {
+  Future<bool?> _showDeleteConfirmDialog(BuildContext context) {
+    return showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Confirm Delete'),
+        content: const Text('Are you sure you want to delete this book?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.red,
+              foregroundColor: Colors.white,
+              shape: const StadiumBorder(),
+              padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 12),
+              textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              elevation: 0,
+            ),
+            child: const Text('Delete'),
+          ),
+        ],
+      ),
+    );
+  }
 
   void _showBookDialog({Book? book, int? index}) {
     final titleController = TextEditingController(text: book?.title ?? '');
     final authorController = TextEditingController(text: book?.author ?? '');
-    final yearController = TextEditingController(text: book?.publishedYear.toString() ?? '');
+    final yearController = TextEditingController(
+      text: book?.publishedYear.toString() ?? '',
+    );
     final genreController = TextEditingController(text: book?.genre ?? '');
     final coverController = TextEditingController(text: book?.coverUrl ?? '');
 
@@ -31,16 +60,39 @@ class _AdminPageState extends State<AdminPage> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                TextField(controller: titleController, decoration: const InputDecoration(labelText: 'Title')),
-                TextField(controller: authorController, decoration: const InputDecoration(labelText: 'Author')),
-                TextField(controller: yearController, decoration: const InputDecoration(labelText: 'Published Year'), keyboardType: TextInputType.number),
-                TextField(controller: genreController, decoration: const InputDecoration(labelText: 'Genre')),
-                TextField(controller: coverController, decoration: const InputDecoration(labelText: 'Cover Image URL')),
+                TextField(
+                  controller: titleController,
+                  decoration: const InputDecoration(labelText: 'Title'),
+                ),
+                TextField(
+                  controller: authorController,
+                  decoration: const InputDecoration(labelText: 'Author'),
+                ),
+                TextField(
+                  controller: yearController,
+                  decoration: const InputDecoration(
+                    labelText: 'Published Year',
+                  ),
+                  keyboardType: TextInputType.number,
+                ),
+                TextField(
+                  controller: genreController,
+                  decoration: const InputDecoration(labelText: 'Genre'),
+                ),
+                TextField(
+                  controller: coverController,
+                  decoration: const InputDecoration(
+                    labelText: 'Cover Image URL',
+                  ),
+                ),
               ],
             ),
           ),
           actions: [
-            TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancel'),
+            ),
             ElevatedButton(
               onPressed: () {
                 final newBook = Book(
@@ -80,7 +132,10 @@ class _AdminPageState extends State<AdminPage> {
               itemBuilder: (context, index) {
                 final book = books[index];
                 return Card(
-                  margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 8,
+                  ),
                   child: ListTile(
                     leading: CachedNetworkImage(
                       imageUrl: book.coverUrl,
@@ -90,23 +145,34 @@ class _AdminPageState extends State<AdminPage> {
                       placeholder: (context, url) => const SizedBox(
                         width: 40,
                         height: 60,
-                        child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
+                        child: Center(
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        ),
                       ),
-                      errorWidget: (context, url, error) => const Icon(Icons.error),
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.error),
                     ),
                     title: Text(book.title),
-                    subtitle: Text('${book.author} • ${book.publishedYear} • ${book.genre}'),
+                    subtitle: Text(
+                      '${book.author} • ${book.publishedYear} • ${book.genre}',
+                    ),
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         IconButton(
                           icon: const Icon(Icons.edit),
-                          onPressed: () => _showBookDialog(book: book, index: index),
+                          onPressed: () =>
+                              _showBookDialog(book: book, index: index),
                         ),
                         IconButton(
                           icon: const Icon(Icons.delete),
-                          onPressed: () {
-                            context.read<BookBloc>().add(DeleteBook(book));
+                          onPressed: () async {
+                            final confirmed = await _showDeleteConfirmDialog(
+                              context,
+                            );
+                            if (confirmed == true && context.mounted) {
+                              context.read<BookBloc>().add(DeleteBook(book));
+                            }
                           },
                         ),
                       ],
